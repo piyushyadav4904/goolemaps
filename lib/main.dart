@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
@@ -55,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<LatLng> latLnglsit=[];
   // ignore: non_constant_identifier_names
   List<Marker> MyMarker=[];
+
   @override
   void initState() {
 
@@ -80,9 +81,25 @@ class _MyHomePageState extends State<MyHomePage> {
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
+
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.add_comment),
+                onPressed: () {
+
+                },
+              ),
+            ]
         ),
+
         body: GoogleMap(
-          markers: Set.from(latLnglsit),
+          markers: Set.from(MyMarker),
           myLocationEnabled: true,
           initialCameraPosition: CameraPosition(
             target: LatLng(6.843369, 79.874814),
@@ -96,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
           polygons: Set<Polygon>.of(<Polygon>[
             Polygon(
                 polygonId: PolygonId('area'),
-                points: latLnglsit,
+                points: latLnglsit,//change this with getpoints() when you start first and add the points manually by emulater than relace it with latlnglist
                 geodesic: true,
                 strokeColor: Colors.red.withOpacity(0.6),
                 strokeWidth: 5,
@@ -104,36 +121,159 @@ class _MyHomePageState extends State<MyHomePage> {
                 visible: true),
 
 
-          ]),)
+          ]),),
+                 floatingActionButton: FloatingActionButton(
+                   backgroundColor: Colors.amber,
+                   foregroundColor: Colors.black,
+                   onPressed: () {
+                     // Respond to button press
+                   },
+                   child: Icon(Icons.add),
 
+
+
+    ),
+
+      drawer: Drawer(
+
+            // Add a ListView to the drawer. This ensures the user can scroll
+            // through the options in the drawer if there isn't enough vertical
+            // space to fit everything.
+            child: ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  accountName: Text("Abhishek Mishra"),
+                  accountEmail: Text("abhishekm977@gmail.com"),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor: Colors.orange,
+                    child: Text(
+                      "A",
+                      style: TextStyle(fontSize: 40.0,color: Colors.black87),
+                    ),
+                  ),
+                ),
+
+                ListTile(
+                  title: Text('map'),
+                  leading: Icon(Icons.map),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: Text('saved messures'),
+                  leading: Icon(Icons.save_alt),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: Text('Group'),
+                  leading: Icon(Icons.group),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: Text('synchronize'),
+                  leading: Icon(Icons.sync),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: Text('import'),
+                  leading: Icon(Icons.import_export),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: Text('setting'),
+                  leading: Icon(Icons.settings),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: Text('saved contact us'),
+                  leading: Icon(Icons.message),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+              ],
+            ),
+
+      ),
     );
   }
 //direct add the poitn to draw a polygun
   getPoints() {
+
     return [
       LatLng(6.862462, 79.859482),
       LatLng(6.862258, 79.862325),
       LatLng(6.863121, 79.863644),
-      LatLng(6.864538, 79.865039),
-
-
+      LatLng(6.864538, 79.865039)
     ];
   }
 
 
  void _handleTap(LatLng argument) {
     setState(() {
+print(argument);
 
       MyMarker.add(
           Marker(
+            draggable: true,
+             onDragEnd:(LatLng){
+               MyMarker.remove(argument.toString());
+               latLnglsit.remove(argument);
+               _handleTap(argument);
+             },
+             consumeTapEvents: true,
               markerId: MarkerId(argument.toString()),
-              position: argument
+              position: argument,
+              onTap: (){
+            print("sdfkf");
+              }
 
           )
       );
-      latLnglsit.add(argument);
+latLnglsit.add(argument);
 
     });
   }
+  /// i am using this also sir
+  void _handletmark(LatLng point) {
+    setState(() {
+      print(point);
+      MyMarker.add(
+          Marker(
+              draggable: true,
+              onDragEnd:(LatLng){
+                MyMarker.remove(point.toString());
+                latLnglsit.remove(point);
+               _handleTap(LatLng);},
+              markerId: MarkerId(point.toString()),
+              position: point,
+
+          )
+      );
+      latLnglsit.add(point);
+
+    });
+  }
+
 }
 
