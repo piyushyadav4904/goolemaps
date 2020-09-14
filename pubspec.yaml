@@ -30,7 +30,17 @@ dependencies:
   cupertino_icons: ^0.1.3
   google_maps_flutter: ^0.5.31
   permission_handler: ^5.0.1+1
-
+  characters: ^1.0.0
+  maps_toolkit: ^1.1.0+2
+  geolocator: ^6.0.0+4
+  pedometer: ^2.0.2
+  flutter_sensor_compass: ^0.1.1
+  font_awesome_flutter: ^8.4.0
+  decimal: ^0.3.5
+  percent_indicator: ^2.1.6
+  poly_collisions: ^1.2.4
+  google_map_polyutil: ^1.0.0
+  area: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -45,6 +55,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+  - assets/lofo.png
+  -  assets/logo.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
